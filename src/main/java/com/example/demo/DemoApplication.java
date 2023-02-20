@@ -15,12 +15,11 @@ public class DemoApplication {
 
 		SpringApplication.run(PostgradDAO.class, args);
 		PostgradDAO hej = new PostgradDAO();
-		hej.getCustomerByID(2);
-		ArrayList<Customer> opo = hej.getAllCustomers();
+		System.out.println(hej.getCustomerByID(40));
+		ArrayList<Customer> opo = hej.getCustomerByName("Ma");
 		for(Customer c : opo){
 			System.out.println(c);
 		}
-
 	}
 
 
