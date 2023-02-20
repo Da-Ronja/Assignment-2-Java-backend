@@ -2,8 +2,6 @@ package com.example.demo;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PostgradDAO {
     // Default values that can be overridden
@@ -21,7 +19,7 @@ public class PostgradDAO {
     }
 
     public void test() {
-        try(Connection conn = DriverManager.getConnection(url, username,password);) {
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
             System.out.println("Connected to Postgres...");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -38,16 +36,15 @@ public class PostgradDAO {
             ResultSet result = statement.executeQuery();
 
 
-            while(result.next())
-            {
+            while (result.next()) {
                 Customer customer = new Customer(
                         result.getInt(1),
-                result.getString(2),
-                result.getString(3),
-                result.getString(4),
-                result.getString(5),
-                result.getString(6),
-                result.getString(7)
+                        result.getString(2),
+                        result.getString(3),
+                        result.getString(4),
+                        result.getString(5),
+                        result.getString(6),
+                        result.getString(7)
                 );
                 customers.add(customer);
 
@@ -70,9 +67,8 @@ public class PostgradDAO {
             ResultSet result = statement.executeQuery();
 
 
-            while(result.next())
-            {
-                 customer = new Customer(
+            while (result.next()) {
+                customer = new Customer(
                         result.getInt(1),
                         result.getString(2),
                         result.getString(3),
@@ -82,30 +78,29 @@ public class PostgradDAO {
                         result.getString(7)
                 );
 
-        }
-        }catch (SQLException e) {
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
 
         }
-            return customer;
+        return customer;
     }
 
 
-        public ArrayList<Customer> getCustomerByName(String name) {
-            ArrayList customers = new ArrayList<>();
+    public ArrayList<Customer> getCustomerByName(String name) {
+        ArrayList customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer WHERE first_name LIKE ? OR last_name LIKE ?";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, "%"+name+"%");
-            statement.setString(2, "%"+name+"%");
+            statement.setString(1, "%" + name + "%");
+            statement.setString(2, "%" + name + "%");
             // Execute statement
             ResultSet result = statement.executeQuery();
 
 
-            while(result.next())
-            {
+            while (result.next()) {
                 Customer customer = new Customer(
                         result.getInt(1),
                         result.getString(2),
@@ -123,7 +118,31 @@ public class PostgradDAO {
         }
         return customers;
     }
+
+    // 5. Add a new customer to the database. You also need to add only the fields listed above (our customer object)
+
+    public void create(Customer customer) {
+        String sql = "INSERT INTO " +
+                "customer(first_name, last_name, country, postal_code, phone, email)" +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+        try(Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, customer.first_name);
+            statement.setString(2, customer.last_name);
+            statement.setString(3, customer.country);
+            statement.setString(4, customer.postal_code);
+            statement.setString(5, customer.phone);
+            statement.setString(6, customer.email);
+
+            int result = statement.executeUpdate();
+            System.out.println("Result: " + result);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
 
 
 

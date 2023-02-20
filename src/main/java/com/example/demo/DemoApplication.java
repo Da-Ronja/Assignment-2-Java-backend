@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @SpringBootApplication
@@ -20,6 +18,9 @@ public class DemoApplication {
 		for(Customer c : opo){
 			System.out.println(c);
 		}
+
+
+		hej.create(new Customer("Hanna", "Andersson", "Sweden", "12133", "0102224533", "hanna,andersson@hotmail.com"));
 	}
 
 

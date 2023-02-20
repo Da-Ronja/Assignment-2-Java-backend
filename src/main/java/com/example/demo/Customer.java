@@ -32,4 +32,13 @@ public class Customer {
         this.phone = phone;
         this.email = email;
     }
+
+    public Customer(String first_name, String last_name, String country, String postal_code, String phone, String email) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.country = country;
+        this.postal_code = postal_code;
+        this.phone = phone;
+        this.email = email;
+    }
 }
