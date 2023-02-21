@@ -24,6 +24,8 @@ public class DemoApplication {
                 "0102224533", "hanna,andersson@hotmail.com"));
 
         System.out.println(hej.getCountryWithMostCustomers());
+
+        System.out.println(hej.getCustomerGenrePopularity(12));
     }
 
 
