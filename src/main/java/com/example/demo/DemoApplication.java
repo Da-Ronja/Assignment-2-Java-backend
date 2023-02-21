@@ -1,34 +1,32 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-
-
 @SpringBootApplication
-public class DemoApplication {
+public class DemoApplication implements ApplicationRunner {
+
+    @Autowired
+    PostgradDAO postgradDAO;
 
     public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
 
-        SpringApplication.run(PostgradDAO.class, args);
-        PostgradDAO hej = new PostgradDAO();
-        System.out.println(hej.getCustomerByID(40));
-        ArrayList<Customer> opo = hej.getCustomerByName("Ma");
-        for (Customer c : opo) {
-            System.out.println(c);
-        }
-
-
-        hej.addCustomer(new Customer("Hanna", "Andersson", "Sweden", "12133",
-                "0102224533", "hanna,andersson@hotmail.com"));
-
-        System.out.println(hej.getCountryWithMostCustomers());
-
-        System.out.println(hej.getCustomerGenrePopularity(12));
     }
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
 
+        postgradDAO.getAllCustomers(); // TODO return or sout
+        postgradDAO.getCustomerByID(12); //TODO return or sout
+      //  postgradDAO.getCustomerByName("Luis");
+        // postgradDAO.addCustomer(new Customer("Ronja", "Von Stroll", "SomeWhere", "12345", "0102224533", "ronja.von.stroll@hotmail.com"));
+        postgradDAO.getCountryWithMostCustomers();
+        postgradDAO.getCustomerGenrePopularity(12);
+    }
 }
 
 

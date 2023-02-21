@@ -1,14 +1,23 @@
 package com.example.demo;
 
+import com.example.demo.Models.CustomerCountry;
+import com.example.demo.Models.CustomerGenre;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class PostgradDAO {
     // Default values that can be overridden
-    private String url = "jdbc:postgresql://localhost:5432/Chinook";
-    private String username = "postgres";
-    private String password = "postgres";
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
 
     public PostgradDAO() {
     }
@@ -19,14 +28,6 @@ public class PostgradDAO {
         this.password = password;
     }
 
-    public void test() {
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            System.out.println("Connected to Postgres...");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<Customer> getAllCustomers() {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  FROM customer";
@@ -35,21 +36,7 @@ public class PostgradDAO {
             PreparedStatement statement = conn.prepareStatement(sql);
             // Execute statement
             // TODO extract method???
-            ResultSet result = statement.executeQuery();
-
-
-            while (result.next()) {
-                Customer customer = new Customer(
-                        result.getInt(1),
-                        result.getString(2),
-                        result.getString(3),
-                        result.getString(4),
-                        result.getString(5),
-                        result.getString(6),
-                        result.getString(7));
-                customers.add(customer);
-
-            }
+            resultStatementCustomer(customers, statement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,24 +84,28 @@ public class PostgradDAO {
             statement.setString(1, "%" + name + "%");
             statement.setString(2, "%" + name + "%");
             // Execute statement
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                Customer customer = new Customer(
-                        result.getInt(1),
-                        result.getString(2),
-                        result.getString(3),
-                        result.getString(4),
-                        result.getString(5),
-                        result.getString(6),
-                        result.getString(7));
-                customers.add(customer);
-            }
+            resultStatementCustomer(customers, statement);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return customers;
+    }
+
+    private void resultStatementCustomer(ArrayList<Customer> customers, PreparedStatement statement) throws SQLException {
+        ResultSet result = statement.executeQuery();
+
+        while (result.next()) {
+            Customer customer = new Customer(
+                    result.getInt(1),
+                    result.getString(2),
+                    result.getString(3),
+                    result.getString(4),
+                    result.getString(5),
+                    result.getString(6),
+                    result.getString(7));
+            customers.add(customer);
+        }
     }
 
     // 5. Add a new customer to the database. You also need to add only the fields listed above (our customer object)
@@ -140,7 +131,6 @@ public class PostgradDAO {
         }
     }
 
-    //
     // 7. Return the country with the most customers.
     public CustomerCountry getCountryWithMostCustomers() {
         CustomerCountry country = null;
@@ -157,6 +147,8 @@ public class PostgradDAO {
                         result.getInt("customer_amount"));
             }
 
+            System.out.println(country);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -167,40 +159,42 @@ public class PostgradDAO {
     // 9. For a given customer, their most popular genre (in the case of a tie, display both). Most popular in this
     // context means the genre that corresponds to the most tracks from invoices associated to that customer.
     public List<CustomerGenre> getCustomerGenrePopularity(int customerId) {
+        String sql = """
+                SELECT i.customer_id, g.name as most_popular_genre
+                FROM invoice as i
+                         JOIN invoice_line as il on i.invoice_id = il.invoice_id
+                         JOIN track as t on il.track_id = t.track_id
+                         JOIN genre g on t.genre_id = g.genre_id
+                WHERE i.customer_id = ?
+                GROUP BY i.customer_id, g.name
+                HAVING count(g.genre_id) = (
+                    SELECT count(g.genre_id) as genre_popularity
+                    FROM invoice as i
+                             JOIN invoice_line as il on i.invoice_id = il.invoice_id
+                             JOIN track as t on il.track_id = t.track_id
+                             JOIN genre g on t.genre_id = g.genre_id
+                    WHERE i.customer_id = ?
+                    GROUP BY i.customer_id, g.genre_id
+                    ORDER BY genre_popularity DESC
+                    LIMIT 1)""";
         List<CustomerGenre> customerGenre = new ArrayList<>();
 
-        String sql = "SELECT i.customer_id, g.name as most_popular_genre\n" +
-                "FROM invoice as i\n" +
-                "         JOIN invoice_line as il on i.invoice_id = il.invoice_id\n" +
-                "         JOIN track as t on il.track_id = t.track_id\n" +
-                "         JOIN genre g on t.genre_id = g.genre_id\n" +
-                "WHERE i.customer_id = ?\n" +
-                "GROUP BY i.customer_id, g.name\n" +
-                "HAVING count(g.genre_id) = (\n" +
-                "    SELECT count(g.genre_id) as genre_popularity\n" +
-                "    FROM invoice as i\n" +
-                "             JOIN invoice_line as il on i.invoice_id = il.invoice_id\n" +
-                "             JOIN track as t on il.track_id = t.track_id\n" +
-                "             JOIN genre g on t.genre_id = g.genre_id\n" +
-                "    WHERE i.customer_id = ?\n" +
-                "    GROUP BY i.customer_id, g.genre_id\n" +
-                "    ORDER BY genre_popularity DESC\n" +
-                "    LIMIT 1)";
-
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+        try(Connection conn = DriverManager.getConnection(url, username,password)) {
+            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, customerId);
             statement.setInt(2, customerId);
-
+            // Execute statement
             ResultSet result = statement.executeQuery();
-
+            // Handle result
             while (result.next()) {
                 customerGenre.add(new CustomerGenre(
-                                result.getInt("customer_id"),
-                                result.getString("most_popular_genre")
-                        ));
+                        result.getInt("customer_id"),
+                        result.getString("most_popular_genre")
+                ));
             }
 
+            System.out.println(customerGenre);
         } catch (SQLException e) {
             e.printStackTrace();
         }
