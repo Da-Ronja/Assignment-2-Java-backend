@@ -8,8 +8,6 @@ public class TempClass {
     private String username = "postgres";
     private String password = "postgres";
 
-
-
     public TempClass() {
     }
 
@@ -37,11 +35,39 @@ public class TempClass {
             );
             customers.add(customer);
         }
-
     } catch (
     SQLException e) {
         e.printStackTrace();
     }
         return customers;
     }
+
+
+    public void updateCostumer(int id, Customer newcustomer) {
+        String sql = "UPDATE customer SET first_name = ?, last_name = ?, country = ?, postal_code = ?, phone = ?, email = ? " +
+                "WHERE customer_id = ?";
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, newcustomer.first_name);
+            statement.setString(2, newcustomer.last_name);
+            statement.setString(3, newcustomer.country);
+            statement.setString(4, newcustomer.postal_code);
+            statement.setString(5, newcustomer.phone);
+            statement.setString(6, newcustomer.email);
+
+            statement.setInt(7, id);
+
+
+            statement.executeUpdate();
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+
     }
