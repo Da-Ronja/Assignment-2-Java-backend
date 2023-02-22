@@ -122,8 +122,9 @@ public class PostgradDAO {
                         result.getString(7)
                 );
                 customers.add(customer);
+                System.out.println(customer);
             }
-            System.out.println(customers);
+
         } catch (
                 SQLException e) {
             e.printStackTrace();
