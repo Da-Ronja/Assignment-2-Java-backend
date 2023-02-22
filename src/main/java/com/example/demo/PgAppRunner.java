@@ -1,6 +1,7 @@
 package com.example.demo;
 
-import org.springframework.aop.scope.ScopedProxyUtils;
+import com.example.demo.repositories.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -8,32 +9,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class PgAppRunner implements ApplicationRunner {
 
-    private final PostgradDAO postgradDAO;
+    private final CustomerRepository customerRepository;
 
-    public PgAppRunner(PostgradDAO postgradDAO) {
-        this.postgradDAO = postgradDAO;
+    @Autowired
+    public PgAppRunner(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        postgradDAO.getAllCustomers(); // TODO return or System.out.println();
-//        postgradDAO.getCustomerByID(12);
-//         postgradDAO.getCustomerByName("Luis");
-        postgradDAO.getCustomersPage(10, 10); 
+        customerRepository.getAllCustomers(); // TODO return or System.out.println();
+      customerRepository.getCustomerByID(12);
+         customerRepository.getCustomerByName("Luis");
+        customerRepository.getCustomersPage(10, 10);
 
 
 
 
 
-        // postgradDAO.addCustomer(new Customer("Ronja", "Von Stroll", "SomeWhere", "12345", "0102224533", "ronja.von.stroll@hotmail.com"));
+        customerRepository.addCustomer(new Customer("Hej", "A", "SomeWhere", "12345", "0102224533", "ronja.von.stroll@hotmail.com"));
 
-// 		Customer newCustomer = new Customer(1, "Milovan", "Glisovic",
-//				"Serbia", "123456", "987654321", "Mil@gmail.com");
-//      postgradDAO.updateCostumer(1, newCustomer);
+ 		Customer newCustomer = new Customer( "Milovan", "Glisovic",
+				"Serbia", "123456", "987654321", "Mil@gmail.com");
+        customerRepository.updateCostumer(1, newCustomer);
 
-        postgradDAO.getCountryWithMostCustomers();
-        postgradDAO.highestSpender();
-        postgradDAO.getCustomerGenrePopularity(12);
+        customerRepository.getCountryWithMostCustomers();
+        customerRepository.highestSpender();
+        customerRepository.getCustomerGenrePopularity(12);
 
     }
 }

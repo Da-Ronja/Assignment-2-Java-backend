@@ -98,6 +98,7 @@ public class PostgradDAO {
     // 4. Return a page of customers from the database. This should take in limit and offset as parameters and make use
     //of the SQL limit and offset keywords to get a subset of the customer data. The customer model from above
     //should be reused
+    // TODO Look up x, y
     public ArrayList<Customer> getCustomersPage(int x, int y) {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
@@ -132,7 +133,7 @@ public class PostgradDAO {
         return customers;
     }
 
-    // Vad är detta :O
+    // TODO Fix
     private void resultStatementCustomer(ArrayList<Customer> customers, PreparedStatement statement) throws SQLException {
         ResultSet result = statement.executeQuery();
 
