@@ -28,7 +28,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     * @return customers
+     * {@inheritDoc}
      */
     @Override
     public List<Customer> getAllCustomers() {
@@ -58,10 +58,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     * @return customers
+     * {@inheritDoc}
      */
     @Override
-    public List<Customer> getCustomersPage(Integer x, Integer y) {
+    public List<Customer> getCustomersPage(Integer limit, Integer offset) {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer ORDER BY customer_id LIMIT ? OFFSET ?";
@@ -69,8 +69,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         try (
                 Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, x);
-            statement.setInt(2, y);
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
             ResultSet result = statement.executeQuery();
 
             while(result.next())
@@ -96,8 +96,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     * @param id
-     * @return customer
+     * {@inheritDoc}
      */
     @Override
     public Customer getCustomerByID(Integer id) {
@@ -130,8 +129,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     /**
-     * @param name
-     * @return customers
+     * {@inheritDoc}
      */
     @Override
     public List<Customer> getCustomerByName(String name) {
@@ -167,10 +165,38 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 
     /**
-     * @param customer
+     * {@inheritDoc}
      */
     @Override
-    public void addCustomer(Customer customer) {
+    public int addCustomer(Customer customer) {
+        String sql = "INSERT INTO " + "customer(first_name, last_name, country, postal_code, phone, email)" +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(url, username, password)) {
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, customer.first_name);
+            statement.setString(2, customer.last_name);
+            statement.setString(3, customer.country);
+            statement.setString(4, customer.postal_code);
+            statement.setString(5, customer.phone);
+            statement.setString(6, customer.email);
+
+            int result = statement.executeUpdate();
+            System.out.println("Result: " + result);
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int updateCostumer(Integer id, Customer customer) {
         String sql = "INSERT INTO " + "customer(first_name, last_name, country, postal_code, phone, email)" +
                 "VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -186,40 +212,16 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             int result = statement.executeUpdate();
             System.out.println("Result: " + result);
 
+            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return 0;
     }
 
     /**
-     * @param id
-     * @param customer
-     */
-    @Override
-    public void updateCostumer(Integer id, Customer customer) {
-        String sql = "INSERT INTO " + "customer(first_name, last_name, country, postal_code, phone, email)" +
-                "VALUES(?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            PreparedStatement statement = conn.prepareStatement(sql);
-
-            statement.setString(1, customer.first_name);
-            statement.setString(2, customer.last_name);
-            statement.setString(3, customer.country);
-            statement.setString(4, customer.postal_code);
-            statement.setString(5, customer.phone);
-            statement.setString(6, customer.email);
-
-            int result = statement.executeUpdate();
-            System.out.println("Result: " + result);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @param customerId
-     * @return customerGenre
+     * {@inheritDoc}
      */
     @Override
     public List<CustomerGenre> getCustomerGenrePopularity(Integer customerId) {
