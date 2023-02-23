@@ -27,7 +27,18 @@ public interface CustomerRepository extends CRUDRepository<Customer, Integer> {
      */
     List<CustomerGenre> getCustomerGenrePopularity(Integer id) throws SQLException;
 
+    /**
+     * Retrieves the country with the most costumers and the respective amount.
+     * @return a record with the country and the respective amount
+     * @throws SQLException if a database access error occurs.
+     */
     CustomerCountry getCountryWithMostCustomers() throws SQLException;
+
+    /**
+     * Retrieves customer with the highest total invoice amount.
+     * @return a record with the customer who has the highest total invoice amount and the respective amount.
+     * @throws SQLException if a database access error occurs.
+     */
     CustomerSpender highestSpender() throws SQLException;
 
 }
