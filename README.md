@@ -1,6 +1,9 @@
 # Data Access with JDBC and SQL
 This is the the second backend assignment provided by Noroff.
 
+####Authors
+Milovan Glisovic & Silvia Alvarez Allende.
+
 ## Description
 This assignment is divided in two parts. First part focused on creating a database and using it manipulating SQL data in Postgres. The second part focused on building a Spring Boot application using Java and manipulating SQL data through JDBC. Implenemtation of repository pattern. Both parts are intended to  interact with the database and implementing functionality to read, add, update, and delete data in the database, as well as perform various queries on the data.
 
