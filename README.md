@@ -60,3 +60,8 @@ The project structure is organized as follows:
 - pom.xml: Build file for Spring boot and Maven
 - Appendix A/: SQL scripts
 - README.md: This file
+
+## Contributors
+
+- [Milovane](https://github.com/Milovane)
+- [Da-Ronja](https://github.com/Da-Ronja)
