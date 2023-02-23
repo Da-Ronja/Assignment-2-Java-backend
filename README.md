@@ -1,7 +1,7 @@
 # Data Access with JDBC and SQL
 This is the the second backend assignment provided by Noroff.
 
-#### Authors
+### Authors
 Milovan Glisovic & Silvia Alvarez Allende.
 
 ## Description
