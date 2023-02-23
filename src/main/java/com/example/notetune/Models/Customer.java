@@ -1,4 +1,4 @@
-package com.example.notetune;
+package com.example.notetune.Models;
 
 public class Customer {
 
