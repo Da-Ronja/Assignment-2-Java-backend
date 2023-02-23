@@ -31,7 +31,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      * {@inheritDoc}
      */
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> findAll() {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  FROM customer";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -58,8 +58,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     /**
      * {@inheritDoc}
      */
+
     @Override
-    public List<Customer> getCustomersPage(Integer limit, Integer offset) {
+    public List<Customer> getPage(Integer limit, Integer offset) {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer ORDER BY customer_id LIMIT ? OFFSET ?";
@@ -95,7 +96,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      * {@inheritDoc}
      */
     @Override
-    public Customer getCustomerByID(Integer id) {
+    public Customer findById(Integer id) {
         Customer customer = null;
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer WHERE customer_id= ?";
@@ -158,7 +159,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      * {@inheritDoc}
      */
     @Override
-    public int addCustomer(Customer customer) {
+    public int insert(Customer customer) {
         String sql = "INSERT INTO " + "customer(first_name, last_name, country, postal_code, phone, email)" +
                 "VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -184,7 +185,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      * {@inheritDoc}
      */
     @Override
-    public int updateCostumer(Integer id, Customer customer) {
+    public int update(Integer id, Customer customer) {
         String sql = "INSERT INTO " + "customer(first_name, last_name, country, postal_code, phone, email)" +
                 "VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -232,13 +233,10 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         List<CustomerGenre> customerGenre = new ArrayList<>();
 
         try(Connection conn = DriverManager.getConnection(url, username, password)) {
-            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, customerId);
             statement.setInt(2, customerId);
-            // Execute statement
             ResultSet result = statement.executeQuery();
-            // Handle result
             while (result.next()) {
                 customerGenre.add(new CustomerGenre(
                         result.getInt("customer_id"),

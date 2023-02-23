@@ -35,10 +35,7 @@ public class PostgradDAO {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  FROM customer";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
-            // Execute statement
-            // TODO extract method???
             resultStatementCustomer(customers, statement);
         } catch (SQLException e) {
             e.printStackTrace();
