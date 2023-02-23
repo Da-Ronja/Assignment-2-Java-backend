@@ -32,7 +32,7 @@ public class PgAppRunner implements ApplicationRunner {
 
  		Customer newCustomer = new Customer( "Milovan", "Glisovic",
 				"Serbia", "123456", "987654321", "Mil@gmail.com");
-        
+
         System.out.println(customerRepository.updateCostumer(1, newCustomer));
         customerRepository.getCountryWithMostCustomers();
         customerRepository.highestSpender();
