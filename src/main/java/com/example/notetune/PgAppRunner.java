@@ -1,5 +1,6 @@
 package com.example.notetune;
 
+import com.example.notetune.Models.Customer;
 import com.example.notetune.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -18,25 +19,21 @@ public class PgAppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        customerRepository.getAllCustomers();
-//         customerRepository.getCustomerByName("Luis");
-//        customerRepository.getCustomersPage(10, 10);
-//
-//        System.out.println(      customerRepository.getCustomerByID(12)
-//);
-//
-//
-//
-//
-//        customerRepository.addCustomer(new Customer("Hej", "A", "SomeWhere", "12345", "0102224533", "ronja.von.stroll@hotmail.com"));
-//
-// 		Customer newCustomer = new Customer( "Milovan", "Glisovic",
-//				"Serbia", "123456", "987654321", "Mil@gmail.com");
-//
-//        System.out.println(customerRepository.updateCostumer(1, newCustomer));
-//        customerRepository.getCountryWithMostCustomers();
-//        customerRepository.highestSpender();
-//        customerRepository.getCustomerGenrePopularity(12);
+        System.out.println(customerRepository.findAll());
+        System.out.println(customerRepository.findById(12));
+        System.out.println(customerRepository.getPage(10, 10));
 
+        int insert = customerRepository.insert(new Customer("Robin", "Hood", "Sherwood skogen",
+                "12345", "0102224533", "robin.hood@hotmail.com"));
+        System.out.println("Insert" + insert);
+
+        Customer newCustomer = new Customer("Milovan", "Glisovic",
+                "Serbia", "123456", "987654321", "Mil@gmail.com");
+        System.out.println(customerRepository.update(1, newCustomer));
+
+        System.out.println(customerRepository.getCustomerByName("Luis"));
+        System.out.println(customerRepository.getCustomerGenrePopularity(12));
+        System.out.println(customerRepository.getCountryWithMostCustomers());
+        System.out.println(customerRepository.highestSpender());
     }
 }

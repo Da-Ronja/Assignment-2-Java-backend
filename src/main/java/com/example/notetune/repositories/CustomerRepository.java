@@ -1,6 +1,6 @@
 package com.example.notetune.repositories;
 
-import com.example.notetune.Customer;
+import com.example.notetune.Models.Customer;
 import com.example.notetune.Models.CustomerCountry;
 import com.example.notetune.Models.CustomerGenre;
 import com.example.notetune.Models.CustomerSpender;
@@ -28,15 +28,15 @@ public interface CustomerRepository extends CRUDRepository<Customer, Integer> {
     List<CustomerGenre> getCustomerGenrePopularity(Integer id) throws SQLException;
 
     /**
-     * Retrieves the country with the most costumers and the respective amount.
-     * @return a record with the country and the respective amount
+     * Retrieves the country with the most costumers from the database.
+     * @return a CustomerCountry object representing the country and the respective amount
      * @throws SQLException if a database access error occurs.
      */
     CustomerCountry getCountryWithMostCustomers() throws SQLException;
 
     /**
-     * Retrieves customer with the highest total invoice amount.
-     * @return a record with the customer who has the highest total invoice amount and the respective amount.
+     * Retrieves customer with the highest total invoice amount from database.
+     * @return a CustomerSpender object representing the customer who has the highest total invoice amount and the respective amount.
      * @throws SQLException if a database access error occurs.
      */
     CustomerSpender highestSpender() throws SQLException;

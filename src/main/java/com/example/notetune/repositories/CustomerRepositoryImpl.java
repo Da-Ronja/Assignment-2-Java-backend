@@ -1,6 +1,6 @@
 package com.example.notetune.repositories;
 
-import com.example.notetune.Customer;
+import com.example.notetune.Models.Customer;
 import com.example.notetune.Models.CustomerCountry;
 import com.example.notetune.Models.CustomerGenre;
 import com.example.notetune.Models.CustomerSpender;
@@ -286,7 +286,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
          SELECT customer.customer_id, customer.first_name, customer.last_name, SUM(invoice.total) AS highest_spender
                 FROM invoice
         INNER JOIN customer ON customer.customer_id = invoice.customer_id
-        GROUP BY customer.first_name, customer.last_name, customer.customer_id 
+        GROUP BY customer.first_name, customer.last_name, customer.customer_id
         ORDER BY SUM(invoice.total) DESC
          LIMIT 1""";
         try(Connection conn = DriverManager.getConnection(url, username, password)) {
