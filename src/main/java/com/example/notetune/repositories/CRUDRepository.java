@@ -1,5 +1,7 @@
 package com.example.notetune.repositories;
 
+import com.example.notetune.Customer;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -10,17 +12,7 @@ public interface CRUDRepository<T, U> {
      * @return a list of T Customer objects.
      * @throws SQLException if a database access error occurs.
      */
-    List<T> getAllCustomers() throws SQLException;
-
-    /**
-     * Retrieves a page of customers, with a specified limit and offset.
-     *
-     * @param limit the maximum of customer to retrieve.
-     * @param offset the index of the first customers to retrieve.
-     * @return a list of T Customer objects representing the requested subset of customer.
-     * @throws SQLException if a database access error occurs.
-     */
-    List<T> getCustomersPage(U limit, U offset) throws SQLException;
+    List<T> findAll() throws SQLException;
 
     /**
      * Retrieves a customer by ID.
@@ -29,16 +21,17 @@ public interface CRUDRepository<T, U> {
      * @return the T Customer object with the specified ID, or null if no such customer exists.
      * @throws SQLException if a database access error occurs.
      */
-    T getCustomerByID(U id) throws SQLException;
+    T findById(U id) throws SQLException;
 
     /**
-     * Retrieves a list of customers whose first or last name contains the specified string.
+     * Retrieves a page of customers, with a specified limit and offset.
      *
-     * @param name the string to search for in the first and last names of the customers.
-     * @return a list of Customer objects whose first or last name contains the specified string.
+     * @param limit the maximum of customer to retrieve.
+     * @param offset the index of the first customers to retrieve.
+     * @return a list of Customer objects representing the requested subset of customer.
      * @throws SQLException if a database access error occurs.
      */
-    List<T> getCustomerByName(String name) throws SQLException; // TODO Should This Live here? Look at the patterns!
+    List<T> getPage(U limit, U offset) throws SQLException;
 
     /**
      * Adds a customer to the database.
@@ -47,7 +40,8 @@ public interface CRUDRepository<T, U> {
      * @return the number of rows affected by the INSERT statement (1 if successful, 0 if unsuccessful).
      * @throws SQLException if a database access error occurs.
      */
-    int addCustomer(T object) throws SQLException;
+
+    int insert(T object) throws SQLException;
 
     /**
      * Updates a customer in the database.
@@ -57,6 +51,6 @@ public interface CRUDRepository<T, U> {
      * @return the number of rows affected by the UPDATE statement (1 if successful, 0 if unsuccessful).
      * @throws SQLException if a database access error occurs.
      */
-    int updateCostumer(U id, T customer) throws SQLException;
+    int update(U id, T customer) throws SQLException;
 
 }
