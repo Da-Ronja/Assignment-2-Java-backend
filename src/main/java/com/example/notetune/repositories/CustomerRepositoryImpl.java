@@ -1,9 +1,9 @@
-package com.example.demo.repositories;
+package com.example.notetune.repositories;
 
-import com.example.demo.Customer;
-import com.example.demo.Models.CustomerCountry;
-import com.example.demo.Models.CustomerGenre;
-import com.example.demo.Models.CustomerSpender;
+import com.example.notetune.Customer;
+import com.example.notetune.Models.CustomerCountry;
+import com.example.notetune.Models.CustomerGenre;
+import com.example.notetune.Models.CustomerSpender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -35,9 +35,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  FROM customer";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
-            // Execute statement
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -65,7 +63,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         ArrayList<Customer> customers = new ArrayList<>();
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer ORDER BY customer_id LIMIT ? OFFSET ?";
-
         try (
                 Connection conn = DriverManager.getConnection(url, username, password)) {
             PreparedStatement statement = conn.prepareStatement(sql);
@@ -85,7 +82,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                         result.getString(7)
                 );
                 customers.add(customer);
-                System.out.println(customer);
             }
 
         } catch (
@@ -104,10 +100,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer WHERE customer_id= ?";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, id);
-            // Execute statement
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -120,7 +114,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                         result.getString(6),
                         result.getString(7));
             }
-            System.out.println(customer);
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -137,11 +130,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         String sql = "SELECT customer_id, first_name, last_name, country, postal_code, phone, email  " +
                 "FROM customer WHERE first_name LIKE ? OR last_name LIKE ?";
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            // Write statement
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, "%" + name + "%");
             statement.setString(2, "%" + name + "%");
-            // Execute statement
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
@@ -156,7 +147,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 customers.add(customer);
             }
 
-            System.out.println(customers);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -181,9 +171,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             statement.setString(5, customer.phone);
             statement.setString(6, customer.email);
 
-            int result = statement.executeUpdate();
-            System.out.println("Result: " + result);
-            return result;
+           return statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,10 +197,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             statement.setString(5, customer.phone);
             statement.setString(6, customer.email);
 
-            int result = statement.executeUpdate();
-            System.out.println("Result: " + result);
+            return statement.executeUpdate();
 
-            return result;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -259,8 +245,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                         result.getString("most_popular_genre")
                 ));
             }
-
-            System.out.println(customerGenre);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -286,8 +270,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                         result.getString("country"),
                         result.getInt("customer_amount"));
             }
-
-            System.out.println(country);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -321,7 +303,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                         result.getDouble("highest_spender")
                 );
             }
-            System.out.println(customerSpender);
         }catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.notetune;
 
-import com.example.demo.repositories.CustomerRepository;
+import com.example.notetune.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -18,11 +18,12 @@ public class PgAppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        customerRepository.getAllCustomers(); // TODO return or System.out.println();
-      customerRepository.getCustomerByID(12);
+        customerRepository.getAllCustomers();
          customerRepository.getCustomerByName("Luis");
         customerRepository.getCustomersPage(10, 10);
 
+        System.out.println(      customerRepository.getCustomerByID(12)
+);
 
 
 
@@ -31,8 +32,8 @@ public class PgAppRunner implements ApplicationRunner {
 
  		Customer newCustomer = new Customer( "Milovan", "Glisovic",
 				"Serbia", "123456", "987654321", "Mil@gmail.com");
-        customerRepository.updateCostumer(1, newCustomer);
-
+        
+        System.out.println(customerRepository.updateCostumer(1, newCustomer));
         customerRepository.getCountryWithMostCustomers();
         customerRepository.highestSpender();
         customerRepository.getCustomerGenrePopularity(12);

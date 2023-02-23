@@ -1,6 +1,4 @@
-package com.example.demo.repositories;
-
-import com.example.demo.Customer;
+package com.example.notetune.repositories;
 
 import java.sql.SQLException;
 import java.util.List;

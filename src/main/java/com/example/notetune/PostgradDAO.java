@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.example.notetune;
 
-import com.example.demo.Models.CustomerCountry;
-import com.example.demo.Models.CustomerGenre;
-import com.example.demo.Models.CustomerSpender;
+import com.example.notetune.Models.CustomerCountry;
+import com.example.notetune.Models.CustomerGenre;
+import com.example.notetune.Models.CustomerSpender;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 

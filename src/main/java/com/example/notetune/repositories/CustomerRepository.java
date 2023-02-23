@@ -1,9 +1,9 @@
-package com.example.demo.repositories;
+package com.example.notetune.repositories;
 
-import com.example.demo.Customer;
-import com.example.demo.Models.CustomerCountry;
-import com.example.demo.Models.CustomerGenre;
-import com.example.demo.Models.CustomerSpender;
+import com.example.notetune.Customer;
+import com.example.notetune.Models.CustomerCountry;
+import com.example.notetune.Models.CustomerGenre;
+import com.example.notetune.Models.CustomerSpender;
 
 import java.sql.SQLException;
 import java.util.List;
